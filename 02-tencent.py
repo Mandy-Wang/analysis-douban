@@ -37,6 +37,7 @@ class Tencent_Spider(object):
         # new_url =self.base_url + params_str
         # 发送请求
         data = self.send_request(self.base_url,params=params)
+        print(data)
         data = data.decode('utf-8')
         # 解析数据
 
