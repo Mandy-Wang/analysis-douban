@@ -12,7 +12,7 @@ class Tencent_Spider(object):
     def send_request(self,url,params={}):
         try:
             data = requests.get(self.base_url,params=params,headers=self.headers).content
-            print(data)
+            # print(data)
             return data
         except Exception as e:
             print(e)
@@ -39,37 +39,37 @@ class Tencent_Spider(object):
             # 发布时间
             item_dict['clain_time'] = tr.select('td')[4].get_text()
             self.dict_list.append(item_dict)
-            print(self.dict_list)
+            # print(self.dict_list)
 
     # 保存文件
     def write_file(self):
         # 把字典转换成字符串  list--> dic
         # 将列表写入文件
-        json.dump(self.dict_list,open('tencent.json','w'))
+        json.dump(self.dict_list,open('tencent1.json','w'))
         # data_str = json.dumps(self.dict_list)
         # with open('tencent.html','w') as f:
         #     f.write(data)
 
     # 调度
     def start_work(self):
-        # 拼接参数
-        params = {
-            'lid':2175,
-            'tid':87,
-            'keywords':'python',
-            'start':0,
-        }
-        # params_str = urllib.parse(params)
-        # new_url =self.base_url + params_str
-        # 发送请求
-        data = self.send_request(self.base_url,params=params)
-        print(type(data))
-        data = data.decode('utf-8')
-        # 解析数据
-        data = self.analysis_data(data)
+        for page in range(0,625,10):
 
-        # 保存文件
-        self.write_file()
+            # 拼接参数
+            params = {
+                'lid':'0',
+                'tid':'0',
+                'keywords':'python',
+                'start':page,
+            }
+            # 发送请求
+            data = self.send_request(self.base_url,params=params)
+            # print(type(data))
+            data = data.decode('utf-8')
+            # 解析数据
+            data = self.analysis_data(data)
+
+            # 保存文件
+            self.write_file()
 
 if __name__ == '__main__':
     tool = Tencent_Spider()
